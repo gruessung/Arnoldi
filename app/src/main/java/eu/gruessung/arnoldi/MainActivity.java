@@ -1,6 +1,9 @@
 package eu.gruessung.arnoldi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +39,58 @@ public class MainActivity extends Activity
     private Spinner s;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_reload:
+
+                mWebview.reload();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
+
+        SharedPreferences localSharedPreferences = getSharedPreferences("eu.gruessung.arnoldi", 0);
+
+
+        Object localObject = "";
+        try
+        {
+            String str = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            localObject = str;
+            if (!Boolean.valueOf(localSharedPreferences.getBoolean("version_" + (String)localObject, false)).booleanValue())
+            {
+                AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+                localBuilder.setTitle("Neu in dieser Version...");
+                localBuilder.setMessage("Es ist nun möglich die Nachträge anzusehen.\nDazu einfach im AppMenu (die drei Punkte oben Rechts oder bei Samsung Galaxy Geräten bis S4 die Menutaste) auf \"Aktualisieren\" drücken.\n\nViel Spaß!").setPositiveButton("Wooohoooo!", null);
+                localBuilder.create().show();
+                localSharedPreferences.edit().putBoolean("version_" + (String)localObject, true).commit();
+
+            }
+
+        }
+        catch (PackageManager.NameNotFoundException localNameNotFoundException)
+        {
+            while (true)
+                localNameNotFoundException.printStackTrace();
+        }
+
 
         mWebview = (WebView) findViewById(R.id.webView);
 
@@ -51,7 +104,8 @@ public class MainActivity extends Activity
             }
         });
 
-        mWebview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        //WebView anweisen immer den Cache zu ignorieren!
+        mWebview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 
         this.arraySpinner = new String[] {
