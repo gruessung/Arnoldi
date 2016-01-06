@@ -78,7 +78,7 @@ public class MainActivity extends Activity
             {
                 AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
                 localBuilder.setTitle("Neu in dieser Version...");
-                localBuilder.setMessage("Es ist nun möglich die Nachträge anzusehen.\nDazu einfach im AppMenu (die drei Punkte oben Rechts oder bei Samsung Galaxy Geräten bis S4 die Menutaste) auf \"Aktualisieren\" drücken.\n\nViel Spaß!").setPositiveButton("Wooohoooo!", null);
+                localBuilder.setMessage("Schaue dir nun auch deine Noten über die App an!\nÜber das Auswahlmenu für die Wochentage kannst du auf die Website von Home.InfoPoint wechseln und hast somit alles auf deinem Handy parat!\n\nViel Spaß!").setPositiveButton("Wooohoooo!", null);
                 localBuilder.create().show();
                 localSharedPreferences.edit().putBoolean("version_" + (String)localObject, true).commit();
 
@@ -109,7 +109,7 @@ public class MainActivity extends Activity
 
 
         this.arraySpinner = new String[] {
-                "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"
+                "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Home.InfoPoint Notenansicht"
         };
         s = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -137,6 +137,9 @@ public class MainActivity extends Activity
                         break;
                     case 4:
                         mWebview.loadUrl("http://www.arnoldi-gym.de/vplan/freitag.htm");
+                        break;
+                    case 5:
+                        mWebview.loadUrl("https://homeinfopoint.de/arnoldi-gym/default.php");
                         break;
                 }
             }

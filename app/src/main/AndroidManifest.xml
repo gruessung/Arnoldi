@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="eu.gruessung.arnoldi" >
+    package="eu.gruessung.arnoldi"
+    android:versionCode="5"
+    android:versionName="1.3">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,7 +13,7 @@
         android:theme="@android:style/Theme.Holo" >
         <activity
             android:name=".MainActivity"
-            android:label="Arnoldi Vertretungsplan" >
+            android:label="Arnoldi Vertretungsplan und Noten" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
